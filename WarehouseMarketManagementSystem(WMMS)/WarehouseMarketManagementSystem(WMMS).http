@@ -1,0 +1,6 @@
+@WarehouseMarketManagementSystem_WMMS__HostAddress = http://localhost:5043
+
+GET {{WarehouseMarketManagementSystem_WMMS__HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

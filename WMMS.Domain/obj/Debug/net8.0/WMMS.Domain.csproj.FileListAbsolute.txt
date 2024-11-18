@@ -1,0 +1,14 @@
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\bin\Debug\net8.0\WMMS.Domain.deps.json
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\bin\Debug\net8.0\WMMS.Domain.runtimeconfig.json
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\bin\Debug\net8.0\WMMS.Domain.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\bin\Debug\net8.0\WMMS.Domain.pdb
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.csproj.AssemblyReference.cache
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.AssemblyInfoInputs.cache
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.AssemblyInfo.cs
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.csproj.CoreCompileInputs.cache
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\refint\WMMS.Domain.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.pdb
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.genruntimeconfig.cache
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\ref\WMMS.Domain.dll

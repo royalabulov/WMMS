@@ -1,0 +1,17 @@
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\bin\Debug\net8.0\WMMS.DAL.deps.json
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\bin\Debug\net8.0\WMMS.DAL.runtimeconfig.json
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\bin\Debug\net8.0\WMMS.DAL.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\bin\Debug\net8.0\WMMS.DAL.pdb
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\bin\Debug\net8.0\WMMS.Domain.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\bin\Debug\net8.0\WMMS.Domain.pdb
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.csproj.AssemblyReference.cache
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.AssemblyInfoInputs.cache
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.AssemblyInfo.cs
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.csproj.CoreCompileInputs.cache
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.csproj.Up2Date
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\refint\WMMS.DAL.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.pdb
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.genruntimeconfig.cache
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\ref\WMMS.DAL.dll
