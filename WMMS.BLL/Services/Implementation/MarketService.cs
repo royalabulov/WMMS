@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WMMS.BLL.Model.DTO_s.MarketDTO_s;
 using WMMS.BLL.Model.GenericResponseApi;
@@ -25,19 +26,40 @@ namespace WMMS.BLL.Services.Implementation
 		public async Task<GenericResponseApi<bool>> CreateMarket(CreateMarketDTO createMarketDTO)
 		{
 			var response = new GenericResponseApi<bool>();
-
-			var mapping = mapper.Map<Market>(createMarketDTO);
-
-			var currentMarket = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-			if (currentMarket == null)
+			try
 			{
-				response.Failure("currentMarket not found", 404);
-				return response;
-			}
+				var warehouse = await unitOfWork
+				   .GetRepository<WareHouse>()
+				   .GetAsQueryable()
+				   .FirstOrDefaultAsync(x => x.Id == createMarketDTO.WareHouseId);
 
-			await unitOfWork.GetRepository<Market>().AddAsync(mapping);
-			await unitOfWork.Commit();
+				if (warehouse == null)
+				{
+					response.Failure("Bu Warehouse ID ilə əlaqəli bir WareHouse tapılmadı.", 404);
+					return response;
+				}
+
+
+				var mapping = mapper.Map<Market>(createMarketDTO);
+
+				var currentMarket = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+				if (currentMarket == null)
+				{
+					response.Failure("currentMarket not found", 404);
+					return response;
+				}
+
+				mapping.AppUserId = int.Parse(currentMarket);
+
+				await unitOfWork.GetRepository<Market>().AddAsync(mapping);
+				await unitOfWork.Commit();
+
+			}
+			catch (Exception ex)
+			{
+				response.Failure($"error {ex.Message}", 500);
+			}
 			response.Success(true);
 			return response;
 		}

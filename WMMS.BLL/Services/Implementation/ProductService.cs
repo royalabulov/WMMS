@@ -31,7 +31,7 @@ namespace WMMS.BLL.Services.Implementation
 			}
 			catch (Exception ex)
 			{
-				// Xəta detalları log üçün saxlanır
+
 				response.Failure($"Error: {ex.Message}", 500);
 			}
 

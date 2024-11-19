@@ -19,45 +19,60 @@ namespace WMMS.BLL.Services.Implementation
 			this.mapper = mapper;
 		}
 
+		//Mehsul vay-yoxdu onu yoxluyuram
+		public async Task<MarketInventory> GetMarketInventoryAsync(int marketId, int productId)
+		{
+			return await unitOfWork.GetRepository<MarketInventory>()
+				.FirstOrDefaultAsync(x => x.MarketId == marketId && x.ProductId == productId);
+		}
+
+		//StockTransfer de caqirilacaq method
+		public async Task AddOrUpdateMarketInventoryAsync(StockTransfer stockTransfer)
+		{
+
+			if (stockTransfer.MarketId == 0 || stockTransfer.ProductId == 0 || stockTransfer.Quantity <= 0)
+			{
+				throw new ArgumentException("MarketId, ProductId and Quantity must be provided and valid.");
+			}
+
+			var marketinventory = await GetMarketInventoryAsync(stockTransfer.MarketId, stockTransfer.ProductId);
+
+			if (marketinventory != null)
+			{
+				marketinventory.ProductQuantity += stockTransfer.Quantity;
+				marketinventory.ArrivalDate = stockTransfer.TransferDate;
+
+				unitOfWork.GetRepository<MarketInventory>().UpdateAsync(marketinventory);
+			}
+			else
+			{
+				var mapping = mapper.Map<MarketInventory>(stockTransfer);
+
+				if (mapping.MarketId == 0 || mapping.ProductId == 0 || mapping.ProductQuantity <= 0)
+				{
+					throw new ArgumentException("Invalid data when mapping to MarketInventory.");
+				}
+
+				await unitOfWork.GetRepository<MarketInventory>().AddAsync(mapping);
+
+			}
+			await unitOfWork.Commit();
+
+		}
+
+
 		public async Task<GenericResponseApi<List<GetAllMarketProductDTO>>> AllMarketProduct(int marketId)
 		{
 			var response = new GenericResponseApi<List<GetAllMarketProductDTO>>();
 
 			var allProducts = await unitOfWork
 				.GetRepository<MarketInventory>()
-				.GetAsQueryable()
+				.GetAsQueryable().Include(x => x.Product)
 				.Where(x => x.MarketId == marketId)
 				.ToListAsync();
 
 			var mapping = mapper.Map<List<GetAllMarketProductDTO>>(allProducts);
 			response.Success(mapping);
-			return response;
-
-		}
-
-		public async Task<GenericResponseApi<bool>> CreateMarketInventory(CreateMarketProductDTO createMarketProductDTO)
-		{
-			var response = new GenericResponseApi<bool>();
-
-			var mapping = mapper.Map<MarketInventory>(createMarketProductDTO);
-
-			var existingProduct = await unitOfWork
-				.GetRepository<MarketInventory>()
-				.FirstOrDefaultAsync(x => x.MarketId == mapping.MarketId && x.ProductId == mapping.ProductId);
-
-			if (existingProduct != null)
-			{
-				existingProduct.ProductQuantity += mapping.ProductQuantity;
-				existingProduct.ArrivalDate = mapping.ArrivalDate;
-				unitOfWork.GetRepository<MarketInventory>().UpdateAsync(existingProduct);
-			}
-			else
-			{
-				await unitOfWork.GetRepository<MarketInventory>().AddAsync(mapping);
-			}
-
-			await unitOfWork.Commit();
-			response.Success(true);
 			return response;
 
 		}

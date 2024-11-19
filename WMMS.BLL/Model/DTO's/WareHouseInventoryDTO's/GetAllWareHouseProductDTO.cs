@@ -11,7 +11,7 @@ namespace WMMS.BLL.Model.DTO_s.WareHouseInventoryDTO_s
 		public int ProductId { get; set; }
 		public string ProductName { get; set; }
 		public decimal ProductPrice { get; set; }
-		public int WareHouseQuantity {  get; set; }
+		public int WareHouseQuantity { get; set; }
 		public DateTime ArrivalDate { get; set; }
 	}
 }

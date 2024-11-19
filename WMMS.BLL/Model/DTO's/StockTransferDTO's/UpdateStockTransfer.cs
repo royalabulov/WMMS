@@ -8,10 +8,10 @@ namespace WMMS.BLL.Model.DTO_s.StockTransferDTO_s
 {
 	public class UpdateStockTransfer
 	{
-		public int Id {  get; set; }
-		public string ProductName {  get; set; }
+		public int Id { get; set; }
+		public string ProductName { get; set; }
 		public int Quantity { get; set; }
 		public DateTime TransferDate { get; set; }
-		public int WareHouseId {  get; set; }
+		public int wareHouseInventoryId { get; set; }
 	}
 }

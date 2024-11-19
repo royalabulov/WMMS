@@ -17,9 +17,8 @@ namespace WMMS.Domain.Entities
 		public int AppUserId { get; set; }
 		public AppUser User { get; set; }
 
-		public ICollection<Product> Products { get; set; }
+		public ICollection<StockTransfer> StockTransfer { get; set; }
 		public ICollection<WareHouseInventory> WareHouseInventories { get; set; }
-		public ICollection<StockTransfer> StockTransfers { get; set; }
 
 		public Market Market { get; set; }
 	}

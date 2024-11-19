@@ -23,7 +23,7 @@ namespace WMMS.BLL.Services.Implementation
 			var response = new GenericResponseApi<bool>();
 
 			var mapping = mapper.Map<WareHouseInventory>(createWareHouseProductDTO);
-			
+
 			var existingProduct = await unitOfWork
 				.GetRepository<WareHouseInventory>()
 				.FirstOrDefaultAsync(x => x.WareHouseId == mapping.WareHouseId && x.ProductId == mapping.ProductId);
@@ -52,14 +52,15 @@ namespace WMMS.BLL.Services.Implementation
 			var allProducts = await unitOfWork
 				.GetRepository<WareHouseInventory>()
 				.GetAsQueryable()
-				.Where(x => x.WareHouseId == wareHouseId)
+				.Where(x => x.WareHouseId == wareHouseId).Include(x => x.Product)
 				.ToListAsync();
 
 			var mapping = mapper.Map<List<GetAllWareHouseProductDTO>>(allProducts);
 
+
 			response.Success(mapping);
 			return response;
-		}  
+		}
 
 		public async Task<GenericResponseApi<bool>> RemoveProduct(int ProductId, int WareHouseId)
 		{
@@ -84,15 +85,15 @@ namespace WMMS.BLL.Services.Implementation
 			var getProduct = await unitOfWork
 				.GetRepository<WareHouseInventory>()
 				.FirstOrDefaultAsync(x => x.ProductId == updateWareHouseProductDTO.ProductId && x.WareHouseId == updateWareHouseProductDTO.WareHouseId);
-			    
-			if(getProduct == null)
+
+			if (getProduct == null)
 			{
 				response.Failure("Product not found", 404);
 				return response;
 			}
 
 
-			var mapping = mapper.Map(updateWareHouseProductDTO,getProduct);
+			var mapping = mapper.Map(updateWareHouseProductDTO, getProduct);
 
 			unitOfWork.GetRepository<WareHouseInventory>().UpdateAsync(mapping);
 			await unitOfWork.Commit();

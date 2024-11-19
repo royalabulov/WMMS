@@ -24,13 +24,6 @@ namespace WarehouseMarketManagementSystem_WMMS_.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> CreateMarketInventory(CreateMarketProductDTO createMarketProduct)
-		{
-			var result = await marketInventoryService.CreateMarketInventory(createMarketProduct);
-			return StatusCode(result.StatusCode, result);
-		}
-
 		[HttpPut]
 		public async Task<IActionResult> UpdateMarketProduct(UpdateMarketProductDTO updateMarketProduct)
 		{

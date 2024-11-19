@@ -10,11 +10,9 @@ namespace WMMS.Domain.Entities
 		public int AppUserId { get; set; }
 		public AppUser AppUser { get; set; }
 
-		public ICollection<Product> Products { get; set; }
+		public ICollection<StockTransfer> StockTransfer { get; set; }
 
 		public ICollection<Sale> Sale { get; set; }
-
-		public ICollection<StockTransfer> StockTransfer { get; set; }
 
 		public int WareHouseId { get; set; }
 		public WareHouse WareHouse { get; set; }

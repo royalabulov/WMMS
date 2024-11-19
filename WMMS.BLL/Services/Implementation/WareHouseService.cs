@@ -52,7 +52,7 @@ namespace WMMS.BLL.Services.Implementation
 
 			var getWareHouseId = await unitOfWork.GetRepository<WareHouse>().GetById(id);
 
-			if(getWareHouseId == null)
+			if (getWareHouseId == null)
 			{
 				response.Failure("Id not found", 404);
 				return response;
@@ -69,7 +69,7 @@ namespace WMMS.BLL.Services.Implementation
 
 			var getAllWareHouse = await unitOfWork.GetRepository<WareHouse>().GetAll();
 
-			if(getAllWareHouse == null)
+			if (getAllWareHouse == null)
 			{
 				response.Failure("WareHouse not found", 404);
 				return response;
@@ -88,7 +88,7 @@ namespace WMMS.BLL.Services.Implementation
 
 			var getWareHouseId = await unitOfWork.GetRepository<WareHouse>().GetById(updateWareHouse.Id);
 
-			if(getWareHouseId == null)
+			if (getWareHouseId == null)
 			{
 				response.Failure("Id not found");
 				return response;

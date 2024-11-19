@@ -21,8 +21,8 @@ namespace WMMS.DAL.Context
 			   .HasColumnType("decimal(18,4)");
 
 			modelBuilder.Entity<MarketInventory>()
-		       .Property(m => m.ProductPrice)
-		       .HasColumnType("decimal(18,4)");
+			   .Property(m => m.ProductPrice)
+			   .HasColumnType("decimal(18,4)");
 
 
 			modelBuilder.Entity<MarketInventory>()
@@ -39,14 +39,7 @@ namespace WMMS.DAL.Context
 				.HasForeignKey(mi => mi.MarketId)
 				.OnDelete(DeleteBehavior.Restrict);
 
-			// Product və WareHouse arasındakı əlaqə
-			modelBuilder.Entity<Product>()
-				.HasOne(p => p.WareHouse)
-				.WithMany(w => w.Products)
-				.HasForeignKey(p => p.WareHouseId)
-				.OnDelete(DeleteBehavior.Restrict);
 
-			
 			// Sale və Product arasındakı əlaqə
 			modelBuilder.Entity<Sale>()
 				.HasOne(s => s.Product)
@@ -54,7 +47,7 @@ namespace WMMS.DAL.Context
 				.HasForeignKey(s => s.ProductId)
 				.OnDelete(DeleteBehavior.Restrict);
 
-			
+
 
 			// StockTransfer və Product arasındakı əlaqə
 			modelBuilder.Entity<StockTransfer>()
@@ -66,7 +59,7 @@ namespace WMMS.DAL.Context
 			// StockTransfer və WareHouse arasındakı əlaqə
 			modelBuilder.Entity<StockTransfer>()
 				.HasOne(st => st.WareHouse)
-				.WithMany(w => w.StockTransfers)
+				.WithMany(w => w.StockTransfer)
 				.HasForeignKey(st => st.WareHouseId)
 				.OnDelete(DeleteBehavior.Restrict);
 
@@ -100,7 +93,6 @@ namespace WMMS.DAL.Context
 					  .HasForeignKey<Market>(d => d.AppUserId);
 			});
 		}
-
 
 		public DbSet<Market> Markets { get; set; }
 		public DbSet<MarketInventory> MarketInventories { get; set; }

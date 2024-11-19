@@ -12,115 +12,134 @@ namespace WMMS.BLL.Services.Implementation
 	{
 		private readonly IUnitOfWork unitOfWork;
 		private readonly IMapper mapper;
+		private readonly IMarketInventoryService marketInventoryService;
 
-		public StockTransferService(IUnitOfWork unitOfWork, IMapper mapper)
+		public StockTransferService(IUnitOfWork unitOfWork, IMapper mapper, IMarketInventoryService marketInventoryService)
 		{
 			this.unitOfWork = unitOfWork;
 			this.mapper = mapper;
+			this.marketInventoryService = marketInventoryService;
 		}
 
 		public async Task<GenericResponseApi<bool>> CreateStockTransfer(CreateStockTransferDTO createStockTransfer)
 		{
 			var response = new GenericResponseApi<bool>();
 
-			var wareHouseInventory = await unitOfWork
-				.GetRepository<WareHouseInventory>()
-				.FirstOrDefaultAsync(x => x.ProductId == createStockTransfer.ProductId && x.WareHouseId == createStockTransfer.WarehouseId);
-
-			if (wareHouseInventory == null || wareHouseInventory.WareHouseQuantity < createStockTransfer.Quantity)
+			try
 			{
-				response.Failure("Not enough products in stock.", 404);
+				// Anbar məlumatını yoxlama
+				var wareHouseInventory = await unitOfWork
+					.GetRepository<WareHouseInventory>()
+					.FirstOrDefaultAsync(x => x.ProductId == createStockTransfer.ProductId && x.WareHouseId == createStockTransfer.WareHouseId);
+
+				if (wareHouseInventory == null || wareHouseInventory.WareHouseQuantity < createStockTransfer.Quantity)
+				{
+					response.Failure("Not enough products in stock.", 404);
+					return response;
+				}
+
+				// Anbar miqdarını azaldırıq
+				wareHouseInventory.WareHouseQuantity -= createStockTransfer.Quantity;
+				unitOfWork.GetRepository<WareHouseInventory>().UpdateAsync(wareHouseInventory);
+
+				// StockTransfer obyekti yaratmaq
+				var stockTransfer = mapper.Map<StockTransfer>(createStockTransfer);
+				await unitOfWork.GetRepository<StockTransfer>().AddAsync(stockTransfer);
+
+				// MarketInventory-ə əlavə etmək
+				await marketInventoryService.AddOrUpdateMarketInventoryAsync(stockTransfer);
+
+				// Dəyişiklikləri yaddaşa saxlamaq
+				await unitOfWork.Commit();
+
+				// Müvəffəqiyyətli cavab
+				response.Success(true);
 				return response;
 			}
-
-			var marketInventory = await unitOfWork
-				.GetRepository<MarketInventory>()
-				.FirstOrDefaultAsync(x => x.ProductId == createStockTransfer.ProductId && x.MarketId == createStockTransfer.MarketId);
-
-			if (marketInventory != null)
+			catch (Exception ex)
 			{
-				marketInventory.ProductQuantity += createStockTransfer.Quantity;
-				unitOfWork.GetRepository<MarketInventory>().UpdateAsync(marketInventory);
+				// Xəta baş verdikdə, müvafiq olaraq cavab qaytarırıq
+				response.Failure($"An error occurred: {ex.Message}", 500);
+				return response;
 			}
-			else
-			{
-				var mapping = mapper.Map<MarketInventory>(createStockTransfer);
-				await unitOfWork.GetRepository<MarketInventory>().AddAsync(mapping);
-			}
-
-			wareHouseInventory.WareHouseQuantity -= createStockTransfer.Quantity;
-			unitOfWork.GetRepository<WareHouseInventory>().UpdateAsync(wareHouseInventory);
-
-			var stockTransfer = mapper.Map<StockTransfer>(createStockTransfer);
-			await unitOfWork.GetRepository<StockTransfer>().AddAsync(stockTransfer);
-
-			await unitOfWork.Commit();
-			response.Success(true);
-			return response;
 
 		}
 
 		public async Task<GenericResponseApi<List<List<GetWareHouseTransferDTO>>>> GetWareHouseTransfer(int wareHouseId)
 		{
 			var response = new GenericResponseApi<List<List<GetWareHouseTransferDTO>>>();
-
-			var transfers = await unitOfWork
-				.GetRepository<StockTransfer>()
-				.GetAsQueryable()
-				.Where(x => x.WareHouseId == wareHouseId)
-				.OrderBy(x => x.TransferDate)
-				.ToListAsync();
-
-			if (!transfers.Any())
+			try
 			{
-				response.Failure("No transfers found for this product in the specified warehouse.");
-				return response;
-			}
+				var transfers = await unitOfWork
+					.GetRepository<StockTransfer>()
+					.GetAsQueryable().Include(x => x.Product)
+					.Where(x => x.WareHouseId == wareHouseId)
+					.OrderBy(x => x.TransferDate)
+					.ToListAsync();
 
-			var result = new List<List<GetWareHouseTransferDTO>>();
-			foreach (var transfer in transfers)
-			{
-				var transferGroup = new List<GetWareHouseTransferDTO>
+				if (!transfers.Any())
 				{
+					response.Failure("No transfers found for this product in the specified warehouse.");
+					return response;
+				}
+
+				var result = new List<List<GetWareHouseTransferDTO>>();
+				foreach (var transfer in transfers)
+				{
+					var transferGroup = new List<GetWareHouseTransferDTO>
+					{
 
 					mapper.Map<GetWareHouseTransferDTO>(transfer)
-				};
+					};
 
-				result.Add(transferGroup);
+					result.Add(transferGroup);
+				}
+
+				response.Success(result);
+
 			}
-
-			response.Success(result);
+			catch (Exception ex)
+			{
+				response.Failure(ex.Message, 500);
+			}
 			return response;
 		}
 
 		public async Task<GenericResponseApi<List<List<GetMarketTransferDTO>>>> GetMarketTransfer(int marketId)
 		{
 			var response = new GenericResponseApi<List<List<GetMarketTransferDTO>>>();
-
-			var transfers = await unitOfWork
-				.GetRepository<StockTransfer>()
-				.GetAsQueryable()
-				.Where(x => x.MarketId == marketId)
-				.OrderBy(x => x.TransferDate)
-				.ToListAsync();
-
-			if (!transfers.Any())
+			try
 			{
-				response.Failure("No transfers found for this product in the specified market.");
-				return response;
-			}
+				var transfers = await unitOfWork
+					.GetRepository<StockTransfer>()
+					.GetAsQueryable().Include(x => x.Product)
+					.Where(x => x.MarketId == marketId)
+					.OrderBy(x => x.TransferDate)
+					.ToListAsync();
 
-			var result = new List<List<GetMarketTransferDTO>>();
-			foreach (var transfer in transfers)
-			{
-				var transferGroup = new List<GetMarketTransferDTO>
+				if (!transfers.Any())
 				{
-					mapper.Map<GetMarketTransferDTO>(transfer)
-				};
-				result.Add(transferGroup);
+					response.Failure("No transfers found for this product in the specified market.");
+					return response;
+				}
+
+				var result = new List<List<GetMarketTransferDTO>>();
+				foreach (var transfer in transfers)
+				{
+					var transferGroup = new List<GetMarketTransferDTO>
+					{
+					   mapper.Map<GetMarketTransferDTO>(transfer)
+					};
+					result.Add(transferGroup);
+				}
+
+				response.Success(result);
+			}
+			catch (Exception ex)
+			{
+				response.Failure(ex.Message, 500);
 			}
 
-			response.Success(result);
 			return response;
 		}
 
@@ -156,9 +175,43 @@ namespace WMMS.BLL.Services.Implementation
 				return response;
 			}
 
+			int oldQuantity = stockTransfer.Quantity;
+			int newQuantity = updateStockTransfer.Quantity;
+
+
 			var mapping = mapper.Map(updateStockTransfer, stockTransfer);
 
 			unitOfWork.GetRepository<StockTransfer>().UpdateAsync(mapping);
+
+			var wareHouseInventory = await unitOfWork
+				.GetRepository<WareHouseInventory>()
+				.FirstOrDefaultAsync(x => x.ProductId == stockTransfer.ProductId && x.WareHouseId == stockTransfer.WareHouseId);
+
+			if (wareHouseInventory == null)
+			{
+				response.Failure("Warehouse inventory not found.", 404);
+				return response;
+			}
+
+			if (newQuantity < oldQuantity)
+			{
+				// Miqdar azalıbsa, WarehouseInventory-ə həmin miqdarı geri qaytarırıq
+				wareHouseInventory.WareHouseQuantity += (oldQuantity - newQuantity); // Yəni, fərq qədər geri qaytarılır
+			}
+			else if (newQuantity > oldQuantity)
+			{
+				if (wareHouseInventory.WareHouseQuantity < (newQuantity - oldQuantity))
+				{
+					response.Failure("Product quantity not found in warehouse for transfer.", 404);
+					return response;
+				}
+				wareHouseInventory.WareHouseQuantity -= (newQuantity - oldQuantity);
+			}
+
+
+
+			unitOfWork.GetRepository<WareHouseInventory>().UpdateAsync(wareHouseInventory);
+
 			await unitOfWork.Commit();
 			response.Success(true);
 			return response;

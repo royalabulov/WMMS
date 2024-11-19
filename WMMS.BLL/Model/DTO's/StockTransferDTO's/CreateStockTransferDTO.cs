@@ -7,7 +7,7 @@
 		public DateTime TransferDate { get; set; }
 		public int ProductId { get; set; }
 		public int MarketId { get; set; }
-		public int WarehouseId { get; set; }
+		public int WareHouseId { get; set; }
 
 	}
 }

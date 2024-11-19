@@ -37,11 +37,14 @@ namespace WMMS.BLL.Mappers
 			//Market
 			CreateMap<Market, GetMarketDTO>().ReverseMap();
 			CreateMap<Market, UpdateMarketDTO>().ReverseMap();
-			CreateMap<Market, CreateMarketDTO>().ReverseMap();
+			CreateMap<Market, CreateMarketDTO>()
+				.ForMember(x => x.WareHouseId, opt => opt.MapFrom(mf => mf.WareHouseId)).ReverseMap();
 
 
 			//WareHouseInventory
-			CreateMap<WareHouseInventory, GetAllWareHouseProductDTO>().ReverseMap();
+			CreateMap<WareHouseInventory, GetAllWareHouseProductDTO>()
+				.ForMember(x => x.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+				.ForMember(x => x.ProductPrice, opt => opt.MapFrom(opt => opt.Product.Price)).ReverseMap();
 			CreateMap<WareHouseInventory, CreateWareHouseProductDTO>().ReverseMap();
 			CreateMap<WareHouseInventory, UpdateWareHouseInventoryDTO>().ReverseMap();
 
@@ -52,34 +55,46 @@ namespace WMMS.BLL.Mappers
 				.ForMember(x => x.MarketId, opt => opt.MapFrom(src => src.MarketId))
 				.ForMember(x => x.ProductQuantity, opt => opt.MapFrom(src => src.Quantity))
 				.ForMember(x => x.ArrivalDate, opt => opt.MapFrom(src => src.TransferDate)).ReverseMap();
+
 			CreateMap<MarketInventory, GetAllMarketProductDTO>().ReverseMap();
+
 			CreateMap<MarketInventory, UpdateMarketProductDTO>().ReverseMap();
 
 
 			//StockTransfer
-			CreateMap<StockTransfer, CreateStockTransferDTO>()
-				.ForMember(x => x.MarketId, opt => opt.MapFrom(src => src.MarketId))
-				.ForMember(x => x.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
-				.ForMember(x => x.ProductId, opt => opt.MapFrom(src => src.ProductId))
-				.ForMember(x => x.WarehouseId, opt => opt.MapFrom(src => src.WareHouseId))
-				.ForMember(x => x.Quantity, opt => opt.MapFrom(src => src.Quantity))
-				.ForMember(x => x.TransferDate, opt => opt.MapFrom(opt => opt.TransferDate)).ReverseMap();
+			CreateMap<CreateStockTransferDTO, StockTransfer>()
+			   .ForMember(x => x.ProductName, opt => opt.MapFrom(src => src.ProductName))
+			   .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+			   .ForMember(dest => dest.WareHouseId, opt => opt.MapFrom(src => src.WareHouseId))
+			   .ForMember(dest => dest.MarketId, opt => opt.MapFrom(src => src.MarketId))
+			   .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+			   .ForMember(dest => dest.TransferDate, opt => opt.MapFrom(src => src.TransferDate));
 
-			CreateMap<StockTransfer, GetAllWareHouseProductDTO>()
-				.ForMember(x => x.ProductName, opt => opt.MapFrom(src => src.Product.ProductName)).ReverseMap(); //xeta ola biler
+
+
+			CreateMap<StockTransfer, MarketInventory>()
+			   .ForMember(dest => dest.MarketId, opt => opt.MapFrom(src => src.MarketId))
+			   .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+			   .ForMember(dest => dest.ProductQuantity, opt => opt.MapFrom(src => src.Quantity))
+			   .ForMember(dest => dest.ArrivalDate, opt => opt.MapFrom(src => src.TransferDate));
+
+
+			CreateMap<StockTransfer, GetWareHouseTransferDTO>()
+			   .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+			   .ForMember(dest => dest.TransferDate, opt => opt.MapFrom(src => src.TransferDate));
+
+
+			CreateMap<StockTransfer, GetMarketTransferDTO>()
+			   .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+			   .ForMember(dest => dest.TransferDate, opt => opt.MapFrom(src => src.TransferDate));
 
 			CreateMap<StockTransfer, UpdateStockTransfer>().ReverseMap();
 
 
-			//MarletInventory
-			CreateMap<CreateMarketProductDTO, MarketInventory>()
-				.ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.ProductName))
-				.ForMember(dest => dest.ProductQuantity, opt => opt.MapFrom(src => src.ProductQuantity))
-				.ForMember(dest => dest.ArrivalDate, opt => opt.MapFrom(src => src.ArrivalDate))
-				.ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
-				.ForMember(dest => dest.MarketId, opt => opt.MapFrom(src => src.MarketId)).ReverseMap();
+			//MarketInventory
+			CreateMap<MarketInventory, GetAllMarketProductDTO>()
+		  .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.Price));
 
-			CreateMap<MarketInventory, GetAllMarketProductDTO>().ReverseMap();
 			CreateMap<MarketInventory, UpdateMarketProductDTO>().ReverseMap();
 
 

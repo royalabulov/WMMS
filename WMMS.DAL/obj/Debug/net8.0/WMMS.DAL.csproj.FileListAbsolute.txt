@@ -15,3 +15,4 @@ C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMM
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.pdb
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.genruntimeconfig.cache
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\ref\WMMS.DAL.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.DAL\obj\Debug\net8.0\WMMS.DAL.sourcelink.json

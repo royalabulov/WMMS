@@ -12,3 +12,4 @@ C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMM
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.pdb
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.genruntimeconfig.cache
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\ref\WMMS.Domain.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.Domain\obj\Debug\net8.0\WMMS.Domain.sourcelink.json

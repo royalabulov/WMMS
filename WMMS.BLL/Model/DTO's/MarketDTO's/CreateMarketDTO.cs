@@ -9,7 +9,8 @@ namespace WMMS.BLL.Model.DTO_s.MarketDTO_s
 {
 	public class CreateMarketDTO
 	{
-		public string Name {  get; set; }
+		public string Name { get; set; }
 		public string Location { get; set; }
+		public int WareHouseId { get; set; }
 	}
 }

@@ -17,3 +17,4 @@ C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMM
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.BLL\obj\Debug\net8.0\WMMS.BLL.pdb
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.BLL\obj\Debug\net8.0\WMMS.BLL.genruntimeconfig.cache
 C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.BLL\obj\Debug\net8.0\ref\WMMS.BLL.dll
+C:\Users\rr799\OneDrive\Desktop\C# Warehouse Market Management System (WMMS)\WMMS.BLL\obj\Debug\net8.0\WMMS.BLL.sourcelink.json
