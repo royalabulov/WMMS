@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WMMS.DAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d976917d42d00e2bcefd31178fdffc8ca550d9a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+594bc382abb59a7a075f7efc02d72586f33902c7")]
 [assembly: System.Reflection.AssemblyProductAttribute("WMMS.DAL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WMMS.DAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

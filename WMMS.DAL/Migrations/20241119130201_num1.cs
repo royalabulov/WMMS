@@ -56,6 +56,22 @@ namespace WMMS.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -212,33 +228,31 @@ namespace WMMS.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "WareHouseInventories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WareHouseId = table.Column<int>(type: "int", nullable: false),
-                    MarketId = table.Column<int>(type: "int", nullable: false)
+                    WareHouseQuantity = table.Column<int>(type: "int", nullable: false),
+                    ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    WareHouseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_WareHouseInventories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Markets_MarketId",
-                        column: x => x.MarketId,
-                        principalTable: "Markets",
+                        name: "FK_WareHouseInventories_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Products_WareHouse_WareHouseId",
+                        name: "FK_WareHouseInventories_WareHouse_WareHouseId",
                         column: x => x.WareHouseId,
                         principalTable: "WareHouse",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -306,11 +320,11 @@ namespace WMMS.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<int>(type: "int", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     TransferDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WareHouseId = table.Column<int>(type: "int", nullable: false),
                     MarketId = table.Column<int>(type: "int", nullable: false),
+                    WareHouseId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -334,34 +348,6 @@ namespace WMMS.DAL.Migrations
                         principalTable: "WareHouse",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WareHouseInventories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    WareHouseQuantity = table.Column<int>(type: "int", nullable: false),
-                    ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    WareHouseId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WareHouseInventories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WareHouseInventories_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WareHouseInventories_WareHouse_WareHouseId",
-                        column: x => x.WareHouseId,
-                        principalTable: "WareHouse",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -424,16 +410,6 @@ namespace WMMS.DAL.Migrations
                 table: "Markets",
                 column: "WareHouseId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_MarketId",
-                table: "Products",
-                column: "MarketId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_WareHouseId",
-                table: "Products",
-                column: "WareHouseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sales_MarketId",
@@ -511,10 +487,10 @@ namespace WMMS.DAL.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Markets");
 
             migrationBuilder.DropTable(
-                name: "Markets");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "WareHouse");

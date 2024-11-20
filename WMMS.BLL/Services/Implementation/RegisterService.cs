@@ -26,7 +26,7 @@ namespace WMMS.BLL.Services.Implementation
 
 			var existingUser = await userManager.FindByEmailAsync(createMarketManager.Email);
 
-			if (existingUser == null)
+			if (existingUser != null)
 			{
 				response.Failure("User with this email already exists.", 400);
 				return response;
@@ -57,33 +57,40 @@ namespace WMMS.BLL.Services.Implementation
 		public async Task<GenericResponseApi<bool>> CreateStorekeeper(CreateStorekeeperDTO createStorekeeper)
 		{
 			var response = new GenericResponseApi<bool>();
-
-			var existingUser = await userManager.FindByEmailAsync(createStorekeeper.Email);
-			if (existingUser == null)
+			try
 			{
-				response.Failure("User with this email already exists", 400);
-				return response;
+				var existingUser = await userManager.FindByEmailAsync(createStorekeeper.Email);
+				if (existingUser != null)
+				{
+					response.Failure("User with this email already exists", 400);
+					return response;
+				}
+
+				var mapping = mapper.Map<AppUser>(createStorekeeper);
+
+				var MarketWarehouseProfile = await userManager.CreateAsync(mapping, createStorekeeper.Password);
+
+				if (!MarketWarehouseProfile.Succeeded)
+				{
+					response.Failure(MarketWarehouseProfile.Errors.Select(x => x.Description).ToList());
+					return response;
+				}
+
+				var addToRoleResult = await userManager.AddToRoleAsync(mapping, "WareHouse");
+				if (!addToRoleResult.Succeeded)
+				{
+					await userManager.DeleteAsync(mapping);
+					response.Failure("Failed to assign role. User creation has been rolled back.");
+					return response;
+				}
+
+				response.Success(true);
+			}
+			catch (Exception ex)
+			{
+				response.Failure(ex.Message, 500);
 			}
 
-			var mapping = mapper.Map<AppUser>(createStorekeeper);
-
-			var MarketWarehouseProfile = await userManager.CreateAsync(mapping, createStorekeeper.Password);
-
-			if (!MarketWarehouseProfile.Succeeded)
-			{
-				response.Failure(MarketWarehouseProfile.Errors.Select(x => x.Description).ToList());
-				return response;
-			}
-
-			var addToRoleResult = await userManager.AddToRoleAsync(mapping, "WareHouse");
-			if (!addToRoleResult.Succeeded)
-			{
-				await userManager.DeleteAsync(mapping);
-				response.Failure("Failed to assign role. User creation has been rolled back.");
-				return response;
-			}
-
-			response.Success(true);
 			return response;
 		}
 
@@ -130,7 +137,7 @@ namespace WMMS.BLL.Services.Implementation
 
 			var getUserId = await userManager.FindByIdAsync(userUpdate.Id.ToString());
 
-			if(getUserId == null)
+			if (getUserId == null)
 			{
 				response.Failure("Id not found", 404);
 				return response;
@@ -151,7 +158,7 @@ namespace WMMS.BLL.Services.Implementation
 
 			var getUserId = await userManager.FindByIdAsync(id.ToString());
 
-			if(getUserId == null)
+			if (getUserId == null)
 			{
 				response.Failure("Id not found", 404);
 				return response;
@@ -160,7 +167,7 @@ namespace WMMS.BLL.Services.Implementation
 			var userRole = await userManager.GetRolesAsync(getUserId);
 
 			await userManager.RemoveFromRoleAsync(getUserId, userRole.ToString());
-			await userManager.AddToRoleAsync(getUserId,role.ToString());
+			await userManager.AddToRoleAsync(getUserId, role.ToString());
 
 			response.Success(true);
 			return response;
@@ -168,7 +175,7 @@ namespace WMMS.BLL.Services.Implementation
 
 		public async Task UpdateRefreshToken(string refreshToken, AppUser appUser, DateTime accessTokenData)
 		{
-			if(appUser != null)
+			if (appUser != null)
 			{
 				appUser.RefreshToken = refreshToken;
 				appUser.ExpireTimeRFT = accessTokenData.AddMinutes(25);
@@ -182,7 +189,7 @@ namespace WMMS.BLL.Services.Implementation
 
 			var getUserId = await userManager.FindByIdAsync(userIdOrName);
 
-			if(getUserId == null)
+			if (getUserId == null)
 			{
 				response.Failure("Id not found", 404);
 				return response;

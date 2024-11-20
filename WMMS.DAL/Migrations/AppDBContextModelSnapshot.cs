@@ -206,10 +206,6 @@ namespace WMMS.DAL.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -316,9 +312,6 @@ namespace WMMS.DAL.Migrations
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MarketId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,4)");
 
@@ -326,14 +319,7 @@ namespace WMMS.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("WareHouseId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("MarketId");
-
-                    b.HasIndex("WareHouseId");
 
                     b.ToTable("Products");
                 });
@@ -384,8 +370,9 @@ namespace WMMS.DAL.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductName")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -556,25 +543,6 @@ namespace WMMS.DAL.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("WMMS.Domain.Entities.Product", b =>
-                {
-                    b.HasOne("WMMS.Domain.Entities.Market", "Market")
-                        .WithMany("Products")
-                        .HasForeignKey("MarketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WMMS.Domain.Entities.WareHouse", "WareHouse")
-                        .WithMany("Products")
-                        .HasForeignKey("WareHouseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Market");
-
-                    b.Navigation("WareHouse");
-                });
-
             modelBuilder.Entity("WMMS.Domain.Entities.Sale", b =>
                 {
                     b.HasOne("WMMS.Domain.Entities.Market", "Market")
@@ -609,7 +577,7 @@ namespace WMMS.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("WMMS.Domain.Entities.WareHouse", "WareHouse")
-                        .WithMany("StockTransfers")
+                        .WithMany("StockTransfer")
                         .HasForeignKey("WareHouseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -653,17 +621,13 @@ namespace WMMS.DAL.Migrations
 
             modelBuilder.Entity("WMMS.Domain.Entities.AppUser", b =>
                 {
-                    b.Navigation("Market")
-                        .IsRequired();
+                    b.Navigation("Market");
 
-                    b.Navigation("WareHouse")
-                        .IsRequired();
+                    b.Navigation("WareHouse");
                 });
 
             modelBuilder.Entity("WMMS.Domain.Entities.Market", b =>
                 {
-                    b.Navigation("Products");
-
                     b.Navigation("Sale");
 
                     b.Navigation("StockTransfer");
@@ -685,9 +649,7 @@ namespace WMMS.DAL.Migrations
                     b.Navigation("Market")
                         .IsRequired();
 
-                    b.Navigation("Products");
-
-                    b.Navigation("StockTransfers");
+                    b.Navigation("StockTransfer");
 
                     b.Navigation("WareHouseInventories");
                 });

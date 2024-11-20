@@ -44,9 +44,23 @@ namespace WMMS.BLL.Mappers
 			//WareHouseInventory
 			CreateMap<WareHouseInventory, GetAllWareHouseProductDTO>()
 				.ForMember(x => x.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
-				.ForMember(x => x.ProductPrice, opt => opt.MapFrom(opt => opt.Product.Price)).ReverseMap();
-			CreateMap<WareHouseInventory, CreateWareHouseProductDTO>().ReverseMap();
-			CreateMap<WareHouseInventory, UpdateWareHouseInventoryDTO>().ReverseMap();
+				.ForMember(x => x.ProductPrice, opt => opt.MapFrom(opt => opt.Product.Price))
+				.ForMember(x => x.WareHouseQuantity, opt => opt.MapFrom(opt => opt.WareHouseQuantity));
+
+			CreateMap<WareHouseInventory, CreateWareHouseProductDTO>()
+		       .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+		       .ForMember(dest => dest.ProductQuantity, opt => opt.MapFrom(src => src.WareHouseQuantity));
+
+			CreateMap<CreateWareHouseProductDTO, WareHouseInventory>()
+				.ForMember(dest => dest.WareHouseQuantity, opt => opt.MapFrom(src => src.ProductQuantity));
+		    
+			CreateMap<WareHouseInventory, UpdateWareHouseInventoryDTO>()
+				.ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+				.ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.Price));
+
+			CreateMap<UpdateWareHouseInventoryDTO, WareHouseInventory>()
+				.ForMember(dest => dest.WareHouseQuantity, opt => opt.MapFrom(src => src.WareHouseQuantity))
+				.ForMember(dest => dest.ArrivalDate, opt => opt.MapFrom(src => src.ArrivalDate));
 
 
 			//MarketInventory
